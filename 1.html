@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1단계 · 질문 원정대</title>
+<style>
+  :root{
+    --ink:#2b2a28;
+    --paper:#faf8f4;
+    --line:#d8d3c8;
+    --accent:#8a6d3b;
+    --accent-deep:#5c4a28;
+    --wrong:#a24b3f;
+    --ok:#3f6b4f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--paper);
+    font-family: "Noto Serif KR", "Georgia", serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 18px 60px;
+  }
+  .card{
+    width:100%;
+    max-width:480px;
+  }
+  .stage-label{
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    font-size:13px;
+    letter-spacing:.18em;
+    color:var(--accent);
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .progress{
+    display:flex;
+    gap:6px;
+    margin-bottom:22px;
+  }
+  .dot{
+    width:26px;height:5px;border-radius:3px;
+    background:var(--line);
+  }
+  .dot.done{background:var(--accent);}
+  h1{
+    font-size:23px;
+    line-height:1.4;
+    margin:0 0 6px;
+    font-weight:700;
+  }
+  .sub{
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    font-size:14px;
+    color:#6b6559;
+    margin-bottom:26px;
+  }
+  .passage{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    padding:18px 20px;
+    font-size:16px;
+    line-height:1.85;
+    margin-bottom:26px;
+  }
+  .passage .ref{
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    font-size:12.5px;
+    color:var(--accent-deep);
+    margin-top:10px;
+    display:block;
+  }
+  .question{
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:16px;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .opt{
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    text-align:left;
+    padding:14px 16px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:15px;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .opt:active{transform:scale(0.99);}
+  .opt.correct{
+    border-color:var(--ok);
+    background:#eef4ef;
+  }
+  .opt.wrong{
+    border-color:var(--wrong);
+    background:#f7ecea;
+  }
+  .feedback{
+    display:none;
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    font-size:14.5px;
+    line-height:1.7;
+    padding:16px 18px;
+    border-radius:8px;
+    margin-bottom:18px;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{background:#eef4ef; color:var(--ok);}
+  .feedback.no{background:#f7ecea; color:var(--wrong);}
+  .next-box{
+    display:none;
+    background:var(--accent-deep);
+    color:#fff;
+    padding:22px 20px;
+    border-radius:10px;
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+  }
+  .next-box.show{display:block; animation:rise .35s ease;}
+  @keyframes rise{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  .next-box .tag{
+    font-size:12px;
+    letter-spacing:.15em;
+    opacity:.75;
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .next-box .loc{
+    font-size:19px;
+    font-weight:700;
+    line-height:1.5;
+    font-family:"Noto Serif KR",serif;
+  }
+  footer{
+    margin-top:30px;
+    text-align:center;
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+    font-size:12px;
+    color:#a39c8c;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="stage-label">질문 원정대 · 1 / 6</div>
+  <div class="progress">
+    <div class="dot done"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+
+  <h1>질문해도 괜찮을까?</h1>
+  <div class="sub">출발 지점 · 첫 번째 질문</div>
+
+  <div class="passage">
+    질문은 믿음의 반대말이 아닙니다. 질문을 가지고 하나님께 나아가는 것이
+    믿음의 시작이 될 수 있습니다.
+    <span class="ref">— 오늘 수련회의 기억할 관점</span>
+  </div>
+
+  <div class="question">다음 중 맞는 설명은? (O / X)</div>
+  <div class="question" style="font-weight:400; margin-top:-10px; margin-bottom:16px;">
+    "하나님과 세상에 대해 궁금한 것이 있으면, 그 질문을 숨기지 말고 하나님께 가지고 나아가도 된다."
+  </div>
+
+  <div class="options" id="options">
+    <button class="opt" data-correct="true">O — 맞다</button>
+    <button class="opt" data-correct="false">X — 틀리다</button>
+  </div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <div class="next-box" id="nextBox">
+    <div class="tag">다음 QR을 찾아가세요</div>
+    <div class="loc" id="nextLoc"></div>
+  </div>
+
+  <footer>재송성결교회 · 중학생 수련회 「왜?」</footer>
+</div>
+
+<script>
+  // ===== 이 부분만 장소별로 수정하세요 =====
+  const NEXT_LOCATION = "예배실 뒷문 게시판";
+  // ==========================================
+
+  const options = document.querySelectorAll('.opt');
+  const feedback = document.getElementById('feedback');
+  const nextBox = document.getElementById('nextBox');
+  document.getElementById('nextLoc').textContent = NEXT_LOCATION;
+
+  let answered = false;
+  options.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+      const isCorrect = btn.dataset.correct === "true";
+      options.forEach(o => {
+        o.disabled = true;
+        if (o.dataset.correct === "true") o.classList.add('correct');
+      });
+      if (!isCorrect) btn.classList.add('wrong');
+
+      feedback.classList.add('show');
+      if (isCorrect) {
+        feedback.classList.add('ok');
+        feedback.textContent = "정답입니다. 도마도 처음부터 쉽게 믿지 못했지만, 예수님은 그런 도마를 버리지 않고 다시 찾아오셨어요.";
+      } else {
+        feedback.classList.add('no');
+        feedback.textContent = "다시 생각해볼까요? 정답은 O예요. 질문하는 것 자체는 잘못이 아니랍니다.";
+      }
+      setTimeout(() => { nextBox.classList.add('show'); }, 400);
+    });
+  });
+</script>
+</body>
+</html>
